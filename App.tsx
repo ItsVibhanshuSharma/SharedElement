@@ -1,20 +1,40 @@
 // In App.js in a new project
 
-import * as React from 'react';
-import {View, Text} from 'react-native';
+import React from 'react';
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  ScrollView,
+  Pressable,
+} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {createSharedElementStackNavigator} from 'react-navigation-shared-element';
+import {SharedElement} from 'react-navigation-shared-element';
+
+const Stack = createSharedElementStackNavigator();
+
 import ListScreen from './src/Screen/ListScreen';
 import DetailScreen from './src/Screen/DetailScreen';
-
-const Stack = createNativeStackNavigator();
 
 function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown: false}}>
         <Stack.Screen name="List" component={ListScreen} />
-        <Stack.Screen name="DetailScreen" component={DetailScreen} />
+        <Stack.Screen
+          name="DetailScreen"
+          component={DetailScreen}
+          sharedElements={(route, otherRoute, showing) => {
+            console.log('Routee', route);
+
+            const {item} = route.params;
+            console.log('App Screen',item.image);
+
+            return [{id: `item.${item.image}.photo`, animation: 'move'}];
+          }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -7,7 +7,7 @@ import {
   ScrollView,
   Pressable,
 } from 'react-native';
-
+import {SharedElement} from 'react-navigation-shared-element';
 export default function ListScreen({navigation}) {
   const data = [
     {
@@ -84,9 +84,15 @@ export default function ListScreen({navigation}) {
     },
   ];
 
-  const handleDetail = (Rs, Image, Name, Description) => {
-    navigation.navigate('DetailScreen', Rs, Image, Name, Description);
+  // const handleDetail = (Rs, Image, Name, Description) => {
+  //   navigation.navigate('DetailScreen', Rs, Image, Name, Description);
+  // };
+
+  const handleDetail = item => {
+    console.log('List Scree', `item.${item.image}.photo`);
+    navigation.navigate('DetailScreen', {item});
   };
+
   return (
     <View style={styles.Container}>
       <View style={{alignSelf: 'center'}}>
@@ -98,18 +104,12 @@ export default function ListScreen({navigation}) {
             return (
               <Pressable
                 style={styles.Card}
-                onPress={() =>
-                  handleDetail({
-                    Rs: item.rs,
-                    Image: item.image,
-                    Name: item.name,
-                    Description: item.description,
-                  })
-                }
+                key={item.id}
+                onPress={() => handleDetail(item)}
               >
-                <View>
-                  <Image src={item.image} style={styles.ImageStyle} />
-                </View>
+                <SharedElement id={`item.${item.image}.photo`}>
+                  <Image source={{uri: item.image}} style={styles.ImageStyle} />
+                </SharedElement>
                 <View
                   style={{
                     justifyContent: 'center',
@@ -151,12 +151,15 @@ const styles = StyleSheet.create({
   ShoeName: {
     fontSize: 20,
     fontWeight: '600',
+    color: '#000000',
   },
   ImageStyle: {
-    borderWidth: 2,
     height: 100,
     width: 100,
-    borderRadius: 50,
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+
     justifyContent: 'center',
   },
 });

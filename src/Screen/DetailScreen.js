@@ -1,18 +1,22 @@
 import React from 'react';
 import {View, Text, Image, StyleSheet} from 'react-native';
-
+import {SharedElement} from 'react-navigation-shared-element';
 export default function DetailScreen({route, navigation}) {
-  const data = route.params; // Extract the image URL from route params
-
+  // const data = route.params; // Extract the image URL from route params
+  console.log('Detail screen', route);
+  const data = route.params.item;
+  console.log('Dataile Screen', `item.${data.image}.photo`);
   return (
     <View style={styles.Container}>
       <Text style={styles.Heading}>Details Screen</Text>
       <View style={styles.Card}>
-        <Image source={{uri: data.Image}} style={styles.ImageStyle} />
+        <SharedElement id={`item.${data.image}.photo`}>
+          <Image source={{uri: data.image}} style={styles.ImageStyle} />
+        </SharedElement>
         <View style={styles.TextWrap}>
-          <Text style={styles.ShoeName}>Rs. {data.Rs}</Text>
-          <Text style={styles.ShoeName}> {data.Name}</Text>
-          <Text style={styles.DescriptionStyle}> {data.Description}</Text>
+          <Text style={styles.ShoeName}>Rs. {data.rs}</Text>
+          <Text style={styles.ShoeName}> {data.name}</Text>
+          <Text style={styles.DescriptionStyle}> {data.description}</Text>
           {/* Add other details as needed */}
         </View>
       </View>
